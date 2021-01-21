@@ -30,14 +30,22 @@ void setup() {
   
   Serial.begin(115200);
   Serial.println("Attempting to connect to WiFi");
+
+  // also print to OLED display
+  OD01.println("Attempting to connect to WiFi");
+  
   WiFi.begin(ssid, pass);
   while ( WiFi.status() != WL_CONNECTED) {
     delay(1000);
     Serial.println("...");
+    OD01.println("...");
   }
 
     Serial.println("Connected to wifi");
     Serial.println("\nStarting connection with server...");
+
+    OD01.println("Connected to wifi");
+    OD01.println("Starting connection with server...");
 
     makeRequest();
 }
@@ -46,6 +54,7 @@ void makeRequest(){
     // if you get a connection, report back via serial:
     if (client.connect(servername, 80)) {
     Serial.println("connected to server");
+    OD01.println("connected to server");
     Serial.println();
     Serial.print("TLE for: ");
     // Make HTTP request:
@@ -73,9 +82,6 @@ void makeRequest(){
     c = client.read();
     Serial.print(c);
 
-    // also print to OLED display
-    OD01.print(c);
-
     if (c == '\n'){
       lineCounter = lineCounter+1;
     }
@@ -90,6 +96,7 @@ void makeRequest(){
   if (!client.connected()) {
     Serial.println();
     Serial.println("disconnecting from server");
+    OD01.println("disconnecting from server");
     client.stop();
   }
 }
