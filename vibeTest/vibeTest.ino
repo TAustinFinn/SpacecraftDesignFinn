@@ -7,6 +7,7 @@ xSI01 SI01;
 #define PRINT_SPEED 250
 static unsigned long lastPrint = 0;
 
+
 void setup() {
   // Start the Serial Monitor at 115200 BAUD
   Serial.begin(115200);
@@ -29,16 +30,29 @@ void setup() {
 }
 
 void loop() {
+  bool ended = false;
+  // set up to loop for 20 seconds
+  while (lastPrint < 20000) {
+  // need to yield or watchdog makes code restart
+  yield(); 
   // Read and calculate data from SI01 sensor
   SI01.poll();
   float vib=(sqrt(sq(SI01.getAX())+sq(SI01.getAY())+sq(SI01.getAZ()))-1)*10.0;
 
   if ( (lastPrint + PRINT_SPEED) < millis()) {
+    Serial.print(millis());
+    Serial.print(" ");
     printAccel(); // Print "A: ax, ay, az"
     Serial.println();
     //client.add("vibrations", vib);
     //client.sendAll(true);
     lastPrint = millis(); // Update lastPrint time
+  }
+  ended = true;
+  }
+  if (ended) {
+  ended = false;  
+  Serial.println("Test Completed");
   }
 }
 
