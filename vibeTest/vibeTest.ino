@@ -30,9 +30,13 @@ void setup() {
 }
 
 void loop() {
-  bool ended = false;
+  // last time a test started
+  long lastStart = 0;
+  // for loop, repeats 5 times
+  for (int i = 1; i < 6; i++) {
+  lastStart = millis();
   // set up to loop for 20 seconds
-  while (lastPrint < 20000) {
+  while (lastStart + 20000 > millis()) {
   // need to yield or watchdog makes code restart
   yield(); 
   // Read and calculate data from SI01 sensor
@@ -48,11 +52,12 @@ void loop() {
     //client.sendAll(true);
     lastPrint = millis(); // Update lastPrint time
   }
-  ended = true;
   }
-  if (ended) {
-  ended = false;  
-  Serial.println("Test Completed");
+  Serial.print("Test number ");
+  Serial.print(i);
+  Serial.println(" completed");
+  // wait 10 seconds to run next test
+  delay(10000);
   }
 }
 
