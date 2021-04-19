@@ -56,7 +56,8 @@ void setup() {
     }
   } else {
     // RL0X Initialized correctly
-    RL0X.setModemConfig(RL0X.Bw125Cr48Sf4096);
+    //RL0X.setModemConfig(RL0X.Bw31_25Cr48Sf512);
+    RL0X.setModemConfig(RL0X.Bw500Cr45Sf128);
     RL0X.setFrequency(RL03_FREQ);
     RL0X.setTxPower(23, false);
   }
